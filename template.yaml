@@ -10,6 +10,7 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: functions/PublishLambdaFunction
+      Timeout: 10
       Handler: publishlambda.App::handleRequest
       Runtime: java8
       MemorySize: 512
@@ -28,6 +29,11 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: functions/RecieveLambdaFunction
+      Timeout: 10
+      Policies:
+      - AWSLambdaExecute
+      - AmazonDynamoDBFullAccess
+
       Handler: recievelambda.App::handleRequest
       Runtime: java8
       MemorySize: 512
@@ -51,6 +57,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+      TableName: wifi-map-csusm
 
 Outputs:
   PublishAPI:
@@ -74,5 +81,5 @@ Outputs:
     Value: !GetAtt PublishLambdaFunctionRole.Arn
 
   RecieveLambdaFunctionIamRole:
-    Description: "Implicit IAM Role created for Publish Lambda function"
+    Description: "Implicit IAM Role created for Recieve Lambda function"
     Value: !GetAtt RecieveLambdaFunctionRole.Arn

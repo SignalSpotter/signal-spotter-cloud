@@ -1,0 +1,5 @@
+/.aws-sam
+.vscode
+build
+**/.gradle
+bin
